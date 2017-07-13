@@ -9,6 +9,14 @@ namespace SystemWrapper.IO
     /// </summary>
     public class StreamWriterWrap : TextWriter, IStreamWriter
     {
+        public TextWriter Instance
+        {
+            get
+            {
+                return StreamWriterInstance;
+            }
+        }
+
         #region Constructors and Initializers
 
         /// <summary>
@@ -22,7 +30,7 @@ namespace SystemWrapper.IO
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:SystemWrapper.IO.StreamWriterWrap"/> class on the specified path.
-        /// </summary>
+        /// </summary>`
         /// <param name="streamWriter">A <see cref="T:System.IO.StreamWriter"/> object.</param>
         public void Initialize(StreamWriter streamWriter)
         {
@@ -171,6 +179,26 @@ namespace SystemWrapper.IO
         public void Initialize(string path, bool append, Encoding encoding, int bufferSize)
         {
             StreamWriterInstance = new StreamWriter(path, append, encoding, bufferSize);
+        }
+
+        public StreamWriterWrap(IStream stream)
+        {
+            Initialize(stream);
+        }
+
+        public void Initialize(IStream stream)
+        {
+            StreamWriterInstance = new StreamWriter(stream.StreamInstance);
+        }
+
+        public StreamWriterWrap(TextWriter tw)
+        {
+            Initialize(tw);
+        }
+
+        public void Initialize(TextWriter tw)
+        {
+            StreamWriterInstance = tw as StreamWriter;
         }
 
         #endregion Constructors and Initializers
